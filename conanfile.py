@@ -38,12 +38,13 @@ class Bzip2Conan(ConanFile):
             make_options += " -j %s" % (cpucount * 2)
 
         make_options += ' PREFIX="%s" ' % finished_package
+        self.run("cd %s && make %s install" % (self.ZIP_FOLDER_NAME, make_options))
         if self.options.shared:
             self.run("mkdir -p pkg/lib && cd %s && make clean && make -f Makefile-libbz2_so %s" % (self.ZIP_FOLDER_NAME, make_options))
             for file in glob.glob('%s/*bz2.so.*' % self.ZIP_FOLDER_NAME):
                 shutil.move(file, "pkg/lib")
-        else:
-            self.run("cd %s && make %s install" % (self.ZIP_FOLDER_NAME, make_options))
+            # remove the static library
+            os.remove("pkg/lib/libbz2.a")
 
     def package(self):
         self.copy("*", dst="lib", src="pkg/lib", links=True)
