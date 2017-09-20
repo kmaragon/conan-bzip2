@@ -20,15 +20,14 @@ class Bzip2Conan(ConanFile):
         tools.download("http://www.bzip.org/%s/%s" % (self.version, zip_name), zip_name)
         tools.check_md5(zip_name, "00b516f4704d4a7cb50a1d97e6e8e15b")
         tools.unzip(zip_name)
-
         os.unlink(zip_name)
 
+    def build(self):
         makefile = self.ZIP_FOLDER_NAME + "/Makefile"
         makeshared = self.ZIP_FOLDER_NAME + "/Makefile-libbz2_so"
         tools.replace_in_file(makefile, "PREFIX=", "PREFIX?=")
         tools.replace_in_file(makeshared, "PREFIX=", "PREFIX?=")
 
-    def build(self):
         current_dir = os.getcwd()
         finished_package = current_dir + "/pkg"
 
