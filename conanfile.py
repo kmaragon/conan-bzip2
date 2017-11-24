@@ -47,7 +47,7 @@ class Bzip2Conan(ConanFile):
 
     def package(self):
         self.copy("*", dst="lib", src="pkg/lib", links=True)
-        self.copy("*", dst="bin", src="pkg/bin", links=True)
+        self.copy("*", dst="bin", src="pkg/bin", links=False)
         self.copy("*", dst="include", src="pkg/include", links=True)
 
     def package_info(self):
